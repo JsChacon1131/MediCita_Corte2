@@ -1,0 +1,32 @@
+const express=require('express');const router=express.Router();
+const {ok,S}=require('../controllers/api.controller');const {authenticate,roles}=require('../middlewares/auth');
+router.post('/auth/registro',ok(req=>S.register(req.body),201));
+router.post('/auth/login',ok(req=>S.login(req.body)));
+router.get('/health',ok(async()=>({estado:'ok'})));
+for(const [name,def] of Object.entries(S.tableDef)){
+  const authRead=def.public?[]:[authenticate,roles('admin')];
+  router.get('/'+name,...authRead,ok(req=>S.list(name,req)));
+  router.get('/'+name+'/:id',...authRead,ok(req=>S.get(name,req.params.id)));
+  router.post('/'+name,authenticate,roles('admin'),ok(req=>S.create(name,req.body),201));
+  router.put('/'+name+'/:id',authenticate,roles('admin'),ok(req=>S.update(name,req.params.id,req.body)));
+  router.delete('/'+name+'/:id',authenticate,roles('admin'),ok(req=>S.remove(name,req.params.id)));
+}
+router.get('/citas',authenticate,ok(req=>S.listCitas(req.query,req.user)));
+router.get('/citas/:id',authenticate,ok(req=>S.getCita(req.params.id,req.user)));
+router.post('/citas',authenticate,ok(req=>S.createCita(req.body,req.user),201));
+router.patch('/citas/:id',authenticate,ok(req=>S.updateCita(req.params.id,req.body,req.user)));
+router.delete('/citas/:id',authenticate,ok(req=>S.deleteCita(req.params.id,req.user)));
+router.get('/mis-citas',authenticate,ok(req=>S.listCitas(req.query,req.user)));
+router.get('/admin/citas-hoy',authenticate,roles('admin'),ok(req=>S.listCitas({fecha:new Date().toLocaleDateString('en-CA',{timeZone:'America/Bogota'})},req.user)));
+router.get('/admin/ingresos',authenticate,roles('admin'),ok(req=>S.reportIncome(req.query)));
+router.get('/resenas',ok(req=>S.listResenas(req.query)));
+router.get('/resenas/:id',ok(req=>S.getResena(req.params.id)));
+router.post('/resenas',authenticate,ok(req=>S.createResena(req.body,req.user),201));
+router.put('/resenas/:id',authenticate,ok(req=>S.updateResena(req.params.id,req.body,req.user)));
+router.delete('/resenas/:id',authenticate,ok(req=>S.deleteResena(req.params.id,req.user)));
+router.get('/examenes',authenticate,ok(req=>S.listExamenes(req.query,req.user)));
+router.get('/examenes/:id',authenticate,ok(req=>S.getExamen(req.params.id,req.user)));
+router.post('/examenes',authenticate,roles('admin','medico'),ok(req=>S.createExamen(req.body,req.user),201));
+router.put('/examenes/:id',authenticate,roles('admin','medico'),ok(req=>S.updateExamen(req.params.id,req.body,req.user)));
+router.delete('/examenes/:id',authenticate,roles('admin'),ok(req=>S.deleteExamen(req.params.id,req.user)));
+module.exports=router;

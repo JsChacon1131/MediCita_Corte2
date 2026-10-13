@@ -1,0 +1,912 @@
+openapi: 3.0.3
+info:
+  title: MediCita API
+  version: 1.0.0
+  description: API académica Corte 2. CONTRASEÑAS EN TEXTO PLANO SOLO PARA EJERCICIO;
+    PROHIBIDO USAR DATOS REALES.
+servers:
+- url: http://localhost:3000
+tags:
+- name: Autenticación
+- name: Sistema
+- name: Citas
+- name: Reseñas
+- name: Exámenes
+- name: Administración
+- name: usuarios
+- name: pacientes
+- name: especialidades
+- name: sedes
+- name: medicos
+- name: horarios
+- name: etiquetas
+paths:
+  /api/usuarios:
+    get:
+      tags:
+      - usuarios
+      summary: Listar usuarios
+      responses: &id001
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Solicitud inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Credenciales o token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Acceso denegado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Conflicto de integridad
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - usuarios
+      summary: Crear usuarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id002
+                nombre: Ana Pérez
+                correo: ana@example.com
+                contrasena: ClaveDePrueba123
+                rol: paciente
+  /api/usuarios/{id}:
+    get:
+      tags:
+      - usuarios
+      summary: Detalle de usuarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - usuarios
+      summary: Actualizar usuarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id002
+    delete:
+      tags:
+      - usuarios
+      summary: Eliminar usuarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/pacientes:
+    get:
+      tags:
+      - pacientes
+      summary: Listar pacientes
+      responses: *id001
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - pacientes
+      summary: Crear pacientes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id003
+                usuario_id: 1
+                telefono: '3001234567'
+  /api/pacientes/{id}:
+    get:
+      tags:
+      - pacientes
+      summary: Detalle de pacientes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - pacientes
+      summary: Actualizar pacientes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id003
+    delete:
+      tags:
+      - pacientes
+      summary: Eliminar pacientes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/especialidades:
+    get:
+      tags:
+      - especialidades
+      summary: Listar especialidades
+      responses: *id001
+    post:
+      tags:
+      - especialidades
+      summary: Crear especialidades
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id004
+                nombre: Cardiología
+  /api/especialidades/{id}:
+    get:
+      tags:
+      - especialidades
+      summary: Detalle de especialidades
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - especialidades
+      summary: Actualizar especialidades
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id004
+    delete:
+      tags:
+      - especialidades
+      summary: Eliminar especialidades
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/sedes:
+    get:
+      tags:
+      - sedes
+      summary: Listar sedes
+      responses: *id001
+    post:
+      tags:
+      - sedes
+      summary: Crear sedes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id005
+                nombre: Sede Norte
+                direccion: 'Calle 1 # 2-3'
+                comuna: Norte
+  /api/sedes/{id}:
+    get:
+      tags:
+      - sedes
+      summary: Detalle de sedes
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - sedes
+      summary: Actualizar sedes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id005
+    delete:
+      tags:
+      - sedes
+      summary: Eliminar sedes
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/medicos:
+    get:
+      tags:
+      - medicos
+      summary: Listar medicos
+      responses: *id001
+    post:
+      tags:
+      - medicos
+      summary: Crear medicos
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id006
+                nombre: Dra. Gómez
+                especialidad_id: 1
+                perfil: Especialista
+                precio_consulta: 120000
+  /api/medicos/{id}:
+    get:
+      tags:
+      - medicos
+      summary: Detalle de medicos
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - medicos
+      summary: Actualizar medicos
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id006
+    delete:
+      tags:
+      - medicos
+      summary: Eliminar medicos
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/horarios:
+    get:
+      tags:
+      - horarios
+      summary: Listar horarios
+      responses: *id001
+    post:
+      tags:
+      - horarios
+      summary: Crear horarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id007
+                medico_id: 1
+                dia_semana: 1
+                hora_inicio: 08:00:00
+                hora_fin: '12:00:00'
+  /api/horarios/{id}:
+    get:
+      tags:
+      - horarios
+      summary: Detalle de horarios
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - horarios
+      summary: Actualizar horarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id007
+    delete:
+      tags:
+      - horarios
+      summary: Eliminar horarios
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/etiquetas:
+    get:
+      tags:
+      - etiquetas
+      summary: Listar etiquetas
+      responses: *id001
+    post:
+      tags:
+      - etiquetas
+      summary: Crear etiquetas
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: &id008
+                nombre: Puntual
+  /api/etiquetas/{id}:
+    get:
+      tags:
+      - etiquetas
+      summary: Detalle de etiquetas
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - etiquetas
+      summary: Actualizar etiquetas
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example: *id008
+    delete:
+      tags:
+      - etiquetas
+      summary: Eliminar etiquetas
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/auth/registro:
+    post:
+      tags:
+      - Autenticación
+      summary: Registrar paciente
+      responses: *id001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                nombre: Ana Pérez
+                correo: ana@example.com
+                contrasena: ClaveDePrueba123
+  /api/auth/login:
+    post:
+      tags:
+      - Autenticación
+      summary: Iniciar sesión; retorna token Bearer
+      responses: *id001
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                correo: ana@example.com
+                contrasena: ClaveDePrueba123
+  /api/citas:
+    get:
+      tags:
+      - Citas
+      summary: Consultar citas según permisos
+      responses: *id001
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Citas
+      summary: Agendar cita con precio de lista y validación del horario
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                paciente_id: 1
+                medico_id: 1
+                horario_id: 1
+                fecha_hora: '2027-10-18 09:00:00'
+  /api/citas/{id}:
+    get:
+      tags:
+      - Citas
+      summary: Detalle de cita
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    patch:
+      tags:
+      - Citas
+      summary: Marcar atendida o cancelada
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                estado: cancelada
+    delete:
+      tags:
+      - Citas
+      summary: Cancelar cita; preserva historial
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/mis-citas:
+    get:
+      tags:
+      - Citas
+      summary: Ver citas propias; permite ?estado=agendada|atendida|cancelada
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: estado
+        in: query
+        required: false
+        schema:
+          type: string
+        description: estado
+  /api/resenas:
+    get:
+      tags:
+      - Reseñas
+      summary: Listar reseñas, filtro ?medico_id=
+      responses: *id001
+      parameters:
+      - name: medico_id
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: medico_id
+    post:
+      tags:
+      - Reseñas
+      summary: Crear reseña después de cita atendida
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                cita_id: 1
+                calificacion: 5
+                comentario: Excelente
+                espera_minutos: 10
+                etiqueta_ids:
+                - 1
+  /api/resenas/{id}:
+    get:
+      tags:
+      - Reseñas
+      summary: Detalle
+      responses: *id001
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - Reseñas
+      summary: Actualizar propia reseña
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                calificacion: 4
+                comentario: Muy bien
+    delete:
+      tags:
+      - Reseñas
+      summary: Eliminar propia reseña
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/examenes:
+    get:
+      tags:
+      - Exámenes
+      summary: Listar resultados por paciente y tipo
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: paciente_id
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: paciente_id
+      - name: tipo
+        in: query
+        required: false
+        schema:
+          type: string
+        description: tipo
+    post:
+      tags:
+      - Exámenes
+      summary: Crear examen con resultado de subtipo
+      responses: *id001
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                paciente_id: 1
+                nombre: Hemoglobina
+                tipo: numerico
+                fecha: '2026-10-13 10:00:00'
+                resultado:
+                  valor: 14.2
+                  unidad: g/dL
+                  referencia_min: 12.0
+                  referencia_max: 16.0
+  /api/examenes/{id}:
+    get:
+      tags:
+      - Exámenes
+      summary: Detalle y contenido de resultado
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+    put:
+      tags:
+      - Exámenes
+      summary: Actualizar informe, resultado o publicación
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                publicado: true
+    delete:
+      tags:
+      - Exámenes
+      summary: Eliminar examen
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: id
+  /api/admin/citas-hoy:
+    get:
+      tags:
+      - Administración
+      summary: Citas del día
+      responses: *id001
+      security:
+      - bearerAuth: []
+  /api/admin/ingresos:
+    get:
+      tags:
+      - Administración
+      summary: Reportar ingresos de citas atendidas por fecha
+      responses: *id001
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: desde
+        in: query
+        required: false
+        schema:
+          type: string
+        description: desde
+      - name: hasta
+        in: query
+        required: false
+        schema:
+          type: string
+        description: hasta
+  /api/health:
+    get:
+      tags:
+      - Sistema
+      summary: Estado API
+      responses: *id001
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string

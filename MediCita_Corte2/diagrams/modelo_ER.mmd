@@ -1,0 +1,66 @@
+erDiagram
+ USUARIOS ||--o| PACIENTES : posee
+ USUARIOS ||--o| MEDICOS : pertenece
+ ESPECIALIDADES ||--o{ MEDICOS : clasifica
+ MEDICOS ||--o{ HORARIOS : dispone
+ SEDES o|--o{ HORARIOS : ubica
+ PACIENTES ||--o{ CITAS : agenda
+ MEDICOS ||--o{ CITAS : atiende
+ HORARIOS ||--o{ CITAS : ofrece
+ CITAS ||--o| RESENAS : recibe
+ RESENAS ||--o{ RESENA_ETIQUETAS : posee
+ ETIQUETAS ||--o{ RESENA_ETIQUETAS : identifica
+ PACIENTES ||--o{ EXAMENES : consulta
+ CITAS o|--o{ EXAMENES : origina
+ EXAMENES ||--o| RESULTADOS_NUMERICOS : numero
+ EXAMENES ||--o| RESULTADOS_CUALITATIVOS : cualitativo
+ EXAMENES ||--o| RESULTADOS_IMAGENES : imagen
+ USUARIOS { int id PK
+ string correo UK
+ string contrasena
+ string rol }
+ PACIENTES { int id PK
+ int usuario_id FK }
+ ESPECIALIDADES { int id PK
+ string nombre UK }
+ SEDES { int id PK
+ string nombre }
+ MEDICOS { int id PK
+ int usuario_id FK
+ int especialidad_id FK
+ decimal precio_consulta }
+ HORARIOS { int id PK
+ int medico_id FK
+ int sede_id FK
+ int dia_semana
+ time hora_inicio
+ time hora_fin }
+ CITAS { int id PK
+ int paciente_id FK
+ int medico_id FK
+ int horario_id FK
+ datetime fecha_hora
+ decimal precio_acordado
+ string estado }
+ RESENAS { int id PK
+ int cita_id FK
+ int calificacion
+ string comentario
+ int espera_minutos }
+ ETIQUETAS { int id PK
+ string nombre }
+ RESENA_ETIQUETAS { int resena_id PK,FK
+ int etiqueta_id PK,FK }
+ EXAMENES { int id PK
+ int paciente_id FK
+ int cita_id FK
+ string tipo }
+ RESULTADOS_NUMERICOS { int examen_id PK,FK
+ decimal valor
+ decimal referencia_min
+ decimal referencia_max }
+ RESULTADOS_CUALITATIVOS { int examen_id PK,FK
+ string resultado }
+ RESULTADOS_IMAGENES { int examen_id PK,FK
+ string informe
+ string archivo_url }

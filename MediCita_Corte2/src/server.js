@@ -1,0 +1,1 @@
+const app=require('./app');const pool=require('./config/db');const port=Number(process.env.PORT||3000);pool.query('SELECT 1').then(()=>app.listen(port,()=>console.log(`MediCita: http://localhost:${port}/api-docs`))).catch(e=>{console.error('MySQL no disponible:',e.message);process.exit(1)});
